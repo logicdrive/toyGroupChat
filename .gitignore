@@ -1,0 +1,18 @@
+__workshop
+tmp
+
+# Common
+**/.vscode
+**/logs
+**/workDirs
+**/target
+
+# externalSystem
+externalSystem/**/__pycache__
+externalSystem/envs/development.env
+externalSystem/envs/production.env
+externalSystem/.flaskenv
+externalSystem/venv
+
+# frontend
+frontend/node_modules
