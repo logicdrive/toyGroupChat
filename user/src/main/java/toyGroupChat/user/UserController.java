@@ -1,4 +1,4 @@
-package toyGroupChat._global.infra;
+package toyGroupChat.user;
 
 import org.springframework.web.bind.annotation.RestController;
 
