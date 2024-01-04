@@ -78,4 +78,12 @@ public class SanityCheckController {
             throw new DivByZeroException();
         }    
     }
+
+    
+    @GetMapping("/authenticationCheck")
+    public ResponseEntity<Void> authenticationCheck() {
+        CustomLogger.debug(CustomLoggerType.ENTER_EXIT);
+        
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

@@ -41,6 +41,14 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: userAuthCheck
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/user/sanityCheck/authenticationCheck
+          filters:
+            - RewritePath=/api/user/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
         - id: user
           uri: http://localhost:8082
           predicates:
