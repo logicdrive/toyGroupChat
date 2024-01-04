@@ -1,15 +1,15 @@
 import { React, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import ImageIcon from '@mui/icons-material/Image';
-import ImageUploadButton from './ImageUploadButton';
+import FileUploadButton from './FileUploadButton';
 
 function App() {
   const [uploadedImageSrc, setUploadedImageSrc] = useState("");
-  const onUploadImage = (imageName, imageBase64Url) => {
+  const onUploadImage = (imageName, imageDataUrl) => {
     console.log(imageName);
-    console.log(imageBase64Url);
+    console.log(imageDataUrl);
     
-    setUploadedImageSrc(imageBase64Url);
+    setUploadedImageSrc(imageDataUrl);
   }
 
   return (
@@ -24,7 +24,7 @@ function App() {
       src={uploadedImageSrc}
     />
 
-    <ImageUploadButton onUploadImage={onUploadImage}>
+    <FileUploadButton accept="image/*" onUploadFile={onUploadImage}>
       <Button
           variant="contained"
           color="primary"
@@ -32,7 +32,7 @@ function App() {
       >
         업로드
       </Button>
-    </ImageUploadButton>
+    </FileUploadButton>
     </>
   )
 }

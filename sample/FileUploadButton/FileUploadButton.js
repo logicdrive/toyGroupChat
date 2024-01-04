@@ -1,9 +1,9 @@
-// 이미지 업로드시에 (imageName, imageBase64Url) 형태로 콜백을 일으키기 위해서
+// 파일 업로드시에 (fileName, dataUrl) 형태로 콜백을 일으키기 위해서
 
 import { React, useState, useRef } from 'react';
 import { Box } from '@mui/material';
 
-const ImageUploadButton = ({onUploadImage, children, ...props}) => {
+const FileUploadButton = ({accept, onUploadFile, children, ...props}) => {
     const fileUploadRef = useRef()
   
     const [onUploadedFileChanged] = useState(() => {
@@ -12,7 +12,7 @@ const ImageUploadButton = ({onUploadImage, children, ...props}) => {
   
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-            onUploadImage(e.target.files[0].name, reader.result)
+            onUploadFile(e.target.files[0].name, reader.result)
           },
           false,
         );
@@ -25,7 +25,7 @@ const ImageUploadButton = ({onUploadImage, children, ...props}) => {
       <>
       <form>
         <input 
-          accept="image/*"
+          accept={accept}
           type="file"
           ref={fileUploadRef}
           onChange={onUploadedFileChanged}
@@ -43,4 +43,4 @@ const ImageUploadButton = ({onUploadImage, children, ...props}) => {
     )
 }
 
-export default ImageUploadButton;
+export default FileUploadButton;
