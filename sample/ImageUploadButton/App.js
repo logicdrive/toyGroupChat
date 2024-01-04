@@ -5,12 +5,11 @@ import ImageUploadButton from './ImageUploadButton';
 
 function App() {
   const [uploadedImageSrc, setUploadedImageSrc] = useState("");
-  const onUploadImage = (imageBase64, imageName, imageBase64Link) => {
-    console.log(imageBase64);
+  const onUploadImage = (imageName, imageBase64Url) => {
     console.log(imageName);
-    console.log(imageBase64Link);
+    console.log(imageBase64Url);
     
-    setUploadedImageSrc(imageBase64Link)
+    setUploadedImageSrc(imageBase64Url);
   }
 
   return (

@@ -1,4 +1,4 @@
-// 이미지 업로드시에 (Base64데이터, 파일명, Base64링크) 형태로 콜백을 일으키기 위해서
+// 이미지 업로드시에 (imageName, imageBase64Url) 형태로 콜백을 일으키기 위해서
 
 import { React, useState, useRef } from 'react';
 import { Box } from '@mui/material';
@@ -12,7 +12,7 @@ const ImageUploadButton = ({onUploadImage, children, ...props}) => {
   
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-            onUploadImage(reader.result.split(",")[1], e.target.files[0].name, reader.result)
+            onUploadImage(e.target.files[0].name, reader.result)
           },
           false,
         );
