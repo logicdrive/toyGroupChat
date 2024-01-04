@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import lombok.RequiredArgsConstructor;
 import toyGroupChat._global.logger.CustomLogger;
@@ -81,9 +82,8 @@ public class SanityCheckController {
 
     
     @GetMapping("/authenticationCheck")
-    public ResponseEntity<Void> authenticationCheck() {
-        CustomLogger.debug(CustomLoggerType.ENTER_EXIT);
-        
+    public ResponseEntity<Void> authenticationCheck(@RequestHeader("User-Email") String userEmail, @RequestHeader("User-Name") String userName) {
+        CustomLogger.debug(CustomLoggerType.ENTER_EXIT, "", String.format("{userEmail: %s, userName: %s}", userEmail, userName));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
