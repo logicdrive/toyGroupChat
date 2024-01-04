@@ -1,7 +1,7 @@
 from flask import jsonify
 
 class UploadFileResDto:
-    def __init__(self, fileUrl:str) :
+    def __init__(self, fileUrl:str="") :
         self.__fileUrl:str = fileUrl
 
     def __str__(self) :
