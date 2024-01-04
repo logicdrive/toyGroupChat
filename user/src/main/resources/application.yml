@@ -5,6 +5,9 @@ spring:
   application:
     name: user
 
+  config:
+    use-legacy-processing: true
+
   jpa:
     properties:
       hibernate:
@@ -37,6 +40,13 @@ logging:
   level:
     root: WARN
     toykiwi.user.custom: DEBUG
+
+# JWT 설정 및 인증을 위한 Public & Private 키 경로
+jwt:
+  issuer: toycodingtest.io
+  expire-after-seconds: 36000
+  public.key: classpath:rsa.public.key
+  private.key: classpath:rsa.private.key
 
 ---
 

@@ -2,7 +2,6 @@ package toyGroupChat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.ApplicationContext;
 
@@ -10,7 +9,6 @@ import toyGroupChat._global.config.kafka.KafkaProcessor;
 
 @SpringBootApplication
 @EnableBinding(KafkaProcessor.class)
-@EnableFeignClients
 public class UserApplication {
 
     public static ApplicationContext applicationContext;

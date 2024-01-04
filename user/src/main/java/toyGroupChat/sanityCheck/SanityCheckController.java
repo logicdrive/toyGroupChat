@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import lombok.RequiredArgsConstructor;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
+import toyGroupChat.sanityCheck.exceptions.DivByZeroException;
 import toyGroupChat.sanityCheck.reqDtos.LogsReqDto;
 import toyGroupChat.sanityCheck.resDtos.LogsResDto;
 
@@ -74,7 +75,7 @@ public class SanityCheckController {
             return ResponseEntity.ok(returnNum);
         } catch(Exception e) {
             CustomLogger.error(e, "Div By Zero Check Message", String.format("{returnNum: %s}", "Undefined"));
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new DivByZeroException();
         }    
     }
 }
