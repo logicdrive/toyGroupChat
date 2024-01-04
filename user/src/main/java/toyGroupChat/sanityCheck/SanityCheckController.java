@@ -82,8 +82,8 @@ public class SanityCheckController {
 
     
     @GetMapping("/authenticationCheck")
-    public ResponseEntity<Void> authenticationCheck(@RequestHeader("User-Email") String userEmail, @RequestHeader("User-Name") String userName) {
-        CustomLogger.debug(CustomLoggerType.ENTER_EXIT, "", String.format("{userEmail: %s, userName: %s}", userEmail, userName));
+    public ResponseEntity<Void> authenticationCheck(@RequestHeader("User-Id") Long userId) {
+        CustomLogger.debug(CustomLoggerType.ENTER_EXIT, "", String.format("{userId: %d}", userId));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

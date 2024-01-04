@@ -9,11 +9,13 @@ import org.springframework.security.oauth2.jwt.Jwt;
 @Getter
 @ToString
 public class JwtDto {
+    private String userId;
     private String email;
     private String name;
 
     public JwtDto(Jwt jwt) {
-        this.email = jwt.getSubject();
+        this.userId = jwt.getSubject();
+        this.email = jwt.getClaim("email");
         this.name = jwt.getClaim("name");
     }
 }

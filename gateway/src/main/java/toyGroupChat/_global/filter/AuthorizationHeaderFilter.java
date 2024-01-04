@@ -14,6 +14,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 import toyGroupChat._global.logger.CustomLogger;
+import toyGroupChat._global.logger.CustomLoggerType;
 import toyGroupChat._global.security.JwtDto;
 
 @Component
@@ -39,12 +40,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                 String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
                 String base64Token = authorizationHeader.replace("Bearer ", "");
                 JwtDto jwtDto = new JwtDto(jwtDecoder.decode(base64Token));
+                CustomLogger.debug(CustomLoggerType.ENTER_EXIT, "Jwt token was decoded", String.format("{jwtDto: %s}", jwtDto.toString()));
 
 
                 ServerHttpRequest mutatedRequest = exchange.getRequest()
                     .mutate()
-                    .header("User-Email", jwtDto.getEmail())
-                    .header("User-Name", jwtDto.getName())
+                    .header("User-Id", jwtDto.getUserId())
                     .build();
 
                 ServerWebExchange mutatedExchange = exchange.mutate()
