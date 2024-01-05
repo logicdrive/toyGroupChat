@@ -9,11 +9,14 @@ import java.util.Scanner;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-
+import toyGroupChat._global.event.FileUploadFailed;
+import toyGroupChat._global.event.FileUploaded;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
 
 import toyGroupChat.sanityCheck.reqDtos.LogsReqDto;
+import toyGroupChat.sanityCheck.reqDtos.MockFileUploadFailedReqDto;
+import toyGroupChat.sanityCheck.reqDtos.MockFileUploadedReqDto;
 import toyGroupChat.sanityCheck.resDtos.LogsResDto;
 
 @Service
@@ -46,5 +49,16 @@ public class SanityCheckService {
             }
 
             return new LogsResDto(logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size()));
+    }
+
+
+    // Policy 테스트용으로 FileUploaded 이벤트를 강제로 발생시키기 위해서
+    public void mockFileUploaded(MockFileUploadedReqDto mockData) {
+        (new FileUploaded(mockData)).publish();
+    }
+
+    // Policy 테스트용으로 FileUploadFailed 이벤트를 강제로 발생시키기 위해서
+    public void mockFileUploadFailed(MockFileUploadFailedReqDto mockData) {
+        (new FileUploadFailed(mockData)).publish();
     }
 }

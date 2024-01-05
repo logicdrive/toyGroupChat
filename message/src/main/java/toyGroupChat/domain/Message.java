@@ -1,7 +1,10 @@
 package toyGroupChat.domain;
 
 import toyGroupChat.MessageApplication;
-
+import toyGroupChat._global.event.FileUploadFailed;
+import toyGroupChat._global.event.FileUploaded;
+import toyGroupChat._global.event.MessageCreated;
+import toyGroupChat._global.event.MessageRemovedByFail;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
 
@@ -110,4 +113,34 @@ public class Message {
             String.format("{%s: %s}", this.getClass().getSimpleName(), this.toString())
         );
     }
+
+
+    // 메세지 파일 업로드 요칭시에 해당 DataUrl을 기반으로 S3에 업로드하기 위해서
+    public static void updateFileId(FileUploaded fileUploaded) {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Message by using JPA", String.format("{fileUploaded: %s}", fileUploaded.toString()));
+        repository().findById(fileUploaded.getMessageId()).ifPresent(message->{
+            
+            CustomLogger.debug(CustomLoggerType.EFFECT, "Message is searched by using JPA", String.format("{message: %s}", message.toString()));
+
+            message.setFileId(fileUploaded.getId());
+            Message updatedMessage = repository().save(message);
+            
+            MessageCreated messageCreated = new MessageCreated(updatedMessage);
+            messageCreated.publishAfterCommit();
+
+        });
+    }
+
+    // 메세지 파일 업로드 실패시에 관련 정보를 삭제시키기 위해서
+    public static void removeMessageByFail(FileUploadFailed fileUploadFailed) {
+        CustomLogger.debug(CustomLoggerType.EFFECT, "Try to search Message by using JPA", String.format("{fileUploadFailed: %s}", fileUploadFailed.toString()));
+        repository().findById(fileUploadFailed.getMessageId()).ifPresent(message->{
+
+           repository().delete(message);
+
+           MessageRemovedByFail messageRemovedByFail = new MessageRemovedByFail(message);
+           messageRemovedByFail.publishAfterCommit();
+
+       });
+   }
 }

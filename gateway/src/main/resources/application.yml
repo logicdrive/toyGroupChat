@@ -56,6 +56,22 @@ spring:
           filters:
             - RewritePath=/api/user/(?<segment>.*), /${segment}
 
+
+        - id: messageSanityCheck
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/message/sanityCheck
+          filters:
+            - RewritePath=/api/message/(?<segment>.*), /${segment}
+
+        - id: message
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/message/**
+          filters:
+            - RewritePath=/api/message/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
 ---
 
 spring:
