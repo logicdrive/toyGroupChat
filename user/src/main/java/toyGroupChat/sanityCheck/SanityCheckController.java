@@ -98,7 +98,7 @@ public class SanityCheckController {
     }
 
 
-    // Policy 테스트용으로 UploadingVideoCompleted 이벤트를 강제로 발생시키기 위해서
+    // Policy 테스트용으로 ProfileImageUploaded 이벤트를 강제로 발생시키기 위해서
     @PostMapping("/mock/ProfileImageUploaded")
     public void mockProfileImageUploaded(@RequestBody MockProfileImageUploadedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
