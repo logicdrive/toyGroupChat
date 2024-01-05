@@ -8,19 +8,27 @@ import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 import toyGroupChat._global.event.FileUploadRequested;
 import toyGroupChat._global.event.ProfileImageUploadRequested;
+import toyGroupChat._global.externalSystemProxy.ExternalSystemProxyService;
+import toyGroupChat._global.externalSystemProxy.reqDtos.EchoWithJsonReqDto;
+import toyGroupChat._global.externalSystemProxy.resDtos.EchoWithJsonResDto;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
 
+import toyGroupChat.sanityCheck.reqDtos.EchoToExternalSystemReqDto;
 import toyGroupChat.sanityCheck.reqDtos.LogsReqDto;
 import toyGroupChat.sanityCheck.reqDtos.MockFileUploadRequestedReqDto;
 import toyGroupChat.sanityCheck.reqDtos.MockProfileImageUploadRequestedReqDto;
 import toyGroupChat.sanityCheck.resDtos.LogsResDto;
 
 @Service
+@RequiredArgsConstructor
 public class SanityCheckService {
     private final String logFilePath = "./logs/logback.log";
+    private final ExternalSystemProxyService externalSystemProxyService;
 
     // 출력된 로그들 중에서 끝부분 몇라인을 읽어서 반환시키기 위해서
     public LogsResDto logs(LogsReqDto logsReqDto) throws FileNotFoundException {
@@ -58,5 +66,13 @@ public class SanityCheckService {
     // Policy 테스트용으로 FileUploadRequested 이벤트를 강제로 발생시키기 위해서
     public void mockFileUploadRequested(MockFileUploadRequestedReqDto mockData) {
         (new FileUploadRequested(mockData)).publish();
+    }
+
+
+    // ExternalSystem과의 JSON 기반 통신이 정상적으로 진행되는지 테스트해보기 위해서
+    public String echoToExternalSystem(EchoToExternalSystemReqDto echoToExternalSystemReqDto) throws Exception {
+        EchoWithJsonReqDto echoWithJsonReqDto = new EchoWithJsonReqDto(echoToExternalSystemReqDto.getMessage());
+        EchoWithJsonResDto echoWithJsonResDto = this.externalSystemProxyService.echoWithJson(echoWithJsonReqDto);
+        return echoWithJsonResDto.getMessage();
     }
 }

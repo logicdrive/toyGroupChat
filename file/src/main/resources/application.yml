@@ -49,14 +49,26 @@ spring:
 
 server.port: 8083
 
+externalSystem:
+  ip: localhost
+  port: 8086
+
 ---
 
 spring:
   profiles: docker
   cloud.stream.kafka.binder.brokers: host.docker.internal:9092
 
+externalSystem:
+  ip: host.docker.internal
+  port: 8086
+
 ---
 
 spring:
   profiles: kubernates
   cloud.stream.kafka.binder.brokers: my-kafka:9092
+
+externalSystem:
+  ip: external-system
+  port: 8086
