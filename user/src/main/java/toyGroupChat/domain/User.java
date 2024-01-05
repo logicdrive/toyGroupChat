@@ -18,6 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import toyGroupChat.UserApplication;
+
 import toyGroupChat._global.event.ProfileImageUploadFailed;
 import toyGroupChat._global.event.ProfileImageUploaded;
 import toyGroupChat._global.event.SignUpCompleted;
