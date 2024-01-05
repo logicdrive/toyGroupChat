@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import lombok.RequiredArgsConstructor;
+
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
-import toyGroupChat.sanityCheck.exceptions.DivByZeroException;
+
 import toyGroupChat.sanityCheck.reqDtos.LogsReqDto;
+import toyGroupChat.sanityCheck.resDtos.LogsResDto;
 import toyGroupChat.sanityCheck.reqDtos.MockProfileImageUploadFailedReqDto;
 import toyGroupChat.sanityCheck.reqDtos.MockProfileImageUploadedReqDto;
-import toyGroupChat.sanityCheck.resDtos.LogsResDto;
+import toyGroupChat.sanityCheck.resDtos.AuthenticationCheckResDto;
+
+import toyGroupChat.sanityCheck.exceptions.DivByZeroException;
 
 @RestController
 @RequiredArgsConstructor
@@ -87,9 +91,10 @@ public class SanityCheckController {
     
     // 게이트웨이 JWT 인증시에 관련 정보를 얻을 수 있는지 테스트해보기 위해서
     @GetMapping("/authenticationCheck")
-    public ResponseEntity<Void> authenticationCheck(@RequestHeader("User-Id") Long userId) {
-        CustomLogger.debug(CustomLoggerType.ENTER_EXIT, "", String.format("{userId: %d}", userId));
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<AuthenticationCheckResDto> authenticationCheck(@RequestHeader("User-Id") Long userId) {
+        AuthenticationCheckResDto authenticationCheckResDto = new AuthenticationCheckResDto(userId);
+        CustomLogger.debug(CustomLoggerType.ENTER_EXIT, "", String.format("{authenticationCheckResDto: %s}", authenticationCheckResDto.toString()));
+        return ResponseEntity.ok(authenticationCheckResDto);
     }
 
 
