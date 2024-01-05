@@ -1,12 +1,16 @@
 package toyGroupChat.user.reqDtos;
 
 import lombok.Data;
-import lombok.ToString;
 
 @Data
-@ToString
 public class SignUpReqDto {
     private String email;
     private String password;
     private String name;
+    private String dataUrl;
+
+    public String toString() { 
+        return String.format("%s(email=%s, name=%s, dataUrlLength=%d)",
+            this.getClass().getSimpleName(), this.email, this.name, this.dataUrl.length());
+    }
 }

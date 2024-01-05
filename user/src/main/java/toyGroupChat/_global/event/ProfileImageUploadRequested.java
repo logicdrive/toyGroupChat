@@ -1,0 +1,23 @@
+package toyGroupChat._global.event;
+
+import toyGroupChat._global.infra.AbstractEvent;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+// 회원가입 요청시에 프로필 이미지를 S3에 업로드하기 위한 이벤트
+@Data
+@EqualsAndHashCode(callSuper=false)
+public class ProfileImageUploadRequested extends AbstractEvent {
+    private Long id;
+    private String dataUrl;
+
+    public ProfileImageUploadRequested() {
+        super();
+    }
+
+    public String toString() { 
+        return String.format("%s(id=%s, dataUrlLength=%d)",
+            this.getClass().getSimpleName(), this.id, this.dataUrl.length());
+    }
+}

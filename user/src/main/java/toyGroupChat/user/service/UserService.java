@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-
+import toyGroupChat._global.event.ProfileImageUploadRequested;
 import toyGroupChat._global.security.JwtTokenService;
 import toyGroupChat.domain.User;
 import toyGroupChat.domain.UserRepository;
@@ -20,13 +20,20 @@ public class UserService {
 
     
     public User signUp(SignUpReqDto signUpReqDto) {
-        return this.userRepository.save(
-            User.builder()
-                .email(signUpReqDto.getEmail())
-                .password(this.passwordEncoder.encode(signUpReqDto.getPassword()))
-                .name(signUpReqDto.getName())
-                .build()
-        );
+        User savedUser = this.userRepository.save(
+                User.builder()
+                    .email(signUpReqDto.getEmail())
+                    .password(this.passwordEncoder.encode(signUpReqDto.getPassword()))
+                    .name(signUpReqDto.getName())
+                    .build()
+            );
+        
+        ProfileImageUploadRequested profileImageUploadRequested = new ProfileImageUploadRequested();
+        profileImageUploadRequested.setId(savedUser.getId());
+        profileImageUploadRequested.setDataUrl(signUpReqDto.getDataUrl());
+        profileImageUploadRequested.publishAfterCommit();
+
+        return savedUser;
     }
 
     public String tokenBySignIn(SignInReqDto signInReqDto) {
