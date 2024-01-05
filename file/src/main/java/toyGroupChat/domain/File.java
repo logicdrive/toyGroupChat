@@ -7,6 +7,9 @@ import toyGroupChat._global.event.FileUploaded;
 import toyGroupChat._global.event.ProfileImageUploadFailed;
 import toyGroupChat._global.event.ProfileImageUploadRequested;
 import toyGroupChat._global.event.ProfileImageUploaded;
+import toyGroupChat._global.externalSystemProxy.ExternalSystemProxyService;
+import toyGroupChat._global.externalSystemProxy.reqDtos.UploadFileReqDto;
+import toyGroupChat._global.externalSystemProxy.resDtos.UploadFileResDto;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
 
@@ -51,6 +54,13 @@ public class File {
             FileRepository.class
         );
         return fileRepository;
+    }
+
+    public static ExternalSystemProxyService externalSystemProxyService() {
+        ExternalSystemProxyService externalSystemProxyService = FileApplication.applicationContext.getBean(
+            ExternalSystemProxyService.class
+        );
+        return externalSystemProxyService;
     }
 
 
@@ -114,7 +124,7 @@ public class File {
 
 
     // 프로필 파일 업로드 요칭시에 해당 DataUrl을 기반으로 S3에 업로드하기 위해서
-    public static void requestProfileImageUpload(ProfileImageUploadRequested profileImageUploadRequested) {
+    public static void requestProfileImageUpload(ProfileImageUploadRequested profileImageUploadRequested) throws Exception {
         File savedFile = null;
         
         try {
@@ -136,11 +146,12 @@ public class File {
 
         try {
             
-            CustomLogger.debug(CustomLoggerType.EFFECT, "[MOCK] Try to upload profile image by using externalService", String.format("{profileImageUploadRequested: %s}", profileImageUploadRequested.toString()));
-            savedFile.setUrl("https://s3.profileImage.jpg");
-            repository().save(savedFile);
+            UploadFileReqDto uploadFileReqDto = new UploadFileReqDto(profileImageUploadRequested.getDataUrl());
+            UploadFileResDto uploadFileResDto = externalSystemProxyService().uploadFile(uploadFileReqDto);
+            savedFile.setUrl(uploadFileResDto.getFileUrl());
+            File updatedFile = repository().save(savedFile);
 
-            ProfileImageUploaded profileImageUploaded = new ProfileImageUploaded(savedFile, profileImageUploadRequested.getId());
+            ProfileImageUploaded profileImageUploaded = new ProfileImageUploaded(updatedFile, profileImageUploadRequested.getId());
             profileImageUploaded.publishAfterCommit();
 
         } catch(Exception e) {
@@ -152,7 +163,7 @@ public class File {
     }
 
     // 메세지 파일 업로드 요칭시에 해당 DataUrl을 기반으로 S3에 업로드하기 위해서
-    public static void requestFileUpload(FileUploadRequested fileUploadRequested) {
+    public static void requestFileUpload(FileUploadRequested fileUploadRequested) throws Exception {
         File savedFile = null;
         
         try {
@@ -174,11 +185,12 @@ public class File {
 
         try {
             
-            CustomLogger.debug(CustomLoggerType.EFFECT, "[MOCK] Try to upload message file by using externalService", String.format("{fileUploadRequested: %s}", fileUploadRequested.toString()));
-            savedFile.setUrl("https://s3.messageFile.jpg");
-            repository().save(savedFile);
+            UploadFileReqDto uploadFileReqDto = new UploadFileReqDto(fileUploadRequested.getDataUrl());
+            UploadFileResDto uploadFileResDto = externalSystemProxyService().uploadFile(uploadFileReqDto);
+            savedFile.setUrl(uploadFileResDto.getFileUrl());
+            File updatedFile = repository().save(savedFile);
 
-            FileUploaded fileUploaded = new FileUploaded(savedFile, fileUploadRequested.getId());
+            FileUploaded fileUploaded = new FileUploaded(updatedFile, fileUploadRequested.getId());
             fileUploaded.publishAfterCommit();
 
         } catch(Exception e) {
