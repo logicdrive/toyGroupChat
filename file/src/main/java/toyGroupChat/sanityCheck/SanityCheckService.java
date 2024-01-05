@@ -8,10 +8,14 @@ import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
 
+import toyGroupChat._global.event.FileUploadRequested;
+import toyGroupChat._global.event.ProfileImageUploadRequested;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
 
 import toyGroupChat.sanityCheck.reqDtos.LogsReqDto;
+import toyGroupChat.sanityCheck.reqDtos.MockFileUploadRequestedReqDto;
+import toyGroupChat.sanityCheck.reqDtos.MockProfileImageUploadRequestedReqDto;
 import toyGroupChat.sanityCheck.resDtos.LogsResDto;
 
 @Service
@@ -43,5 +47,16 @@ public class SanityCheckService {
             }
 
             return new LogsResDto(logs.subList(Math.max(logs.size()-logsReqDto.getLineLength(), 0), logs.size()));
+    }
+
+
+    // Policy 테스트용으로 ProfileImageUploadRequested 이벤트를 강제로 발생시키기 위해서
+    public void mockProfileImageUploadRequested(MockProfileImageUploadRequestedReqDto mockData) {
+        (new ProfileImageUploadRequested(mockData)).publish();
+    }
+
+    // Policy 테스트용으로 FileUploadRequested 이벤트를 강제로 발생시키기 위해서
+    public void mockFileUploadRequested(MockFileUploadRequestedReqDto mockData) {
+        (new FileUploadRequested(mockData)).publish();
     }
 }

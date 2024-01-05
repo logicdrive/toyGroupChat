@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
 
 import toyGroupChat.sanityCheck.reqDtos.LogsReqDto;
+import toyGroupChat.sanityCheck.reqDtos.MockFileUploadRequestedReqDto;
+import toyGroupChat.sanityCheck.reqDtos.MockProfileImageUploadRequestedReqDto;
 import toyGroupChat.sanityCheck.resDtos.LogsResDto;
 import toyGroupChat.sanityCheck.resDtos.AuthenticationCheckResDto;
 
@@ -91,5 +95,22 @@ public class SanityCheckController {
         AuthenticationCheckResDto authenticationCheckResDto = new AuthenticationCheckResDto(userId);
         CustomLogger.debug(CustomLoggerType.ENTER_EXIT, "", String.format("{authenticationCheckResDto: %s}", authenticationCheckResDto.toString()));
         return ResponseEntity.ok(authenticationCheckResDto);
+    }
+
+
+    // Policy 테스트용으로 ProfileImageUploadRequested 이벤트를 강제로 발생시키기 위해서
+    @PostMapping("/mock/ProfileImageUploadRequested")
+    public void mockProfileImageUploadRequested(@RequestBody MockProfileImageUploadRequestedReqDto mockData) {
+        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
+        this.sanityCheckService.mockProfileImageUploadRequested(mockData);
+        CustomLogger.debug(CustomLoggerType.EXIT);
+    }
+
+    // Policy 테스트용으로 FileUploadRequested 이벤트를 강제로 발생시키기 위해서
+    @PostMapping("/mock/FileUploadRequested")
+    public void mockFileUploadRequested(@RequestBody MockFileUploadRequestedReqDto mockData) {
+        CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
+        this.sanityCheckService.mockFileUploadRequested(mockData);
+        CustomLogger.debug(CustomLoggerType.EXIT);
     }
 }
