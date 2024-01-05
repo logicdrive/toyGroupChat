@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: user
+    name: file
 
   config:
     use-legacy-processing: true
@@ -29,7 +29,7 @@ spring:
 
       bindings:
         event-in:
-          group: user
+          group: file
           destination: toyGroupChat
           contentType: application/json
         event-out:
@@ -39,14 +39,7 @@ spring:
 logging:
   level:
     root: WARN
-    toyGroupChat.user.custom: DEBUG
-
-# JWT 설정 및 인증을 위한 Public & Private 키 경로
-jwt:
-  issuer: toygroupchat.io
-  expire-after-seconds: 36000
-  public.key: classpath:rsa.public.key
-  private.key: classpath:rsa.private.key
+    toyGroupChat.file.custom: DEBUG
 
 ---
 
@@ -54,7 +47,7 @@ spring:
   profiles: host
   cloud.stream.kafka.binder.brokers: localhost:9092
 
-server.port: 8082
+server.port: 8083
 
 ---
 
