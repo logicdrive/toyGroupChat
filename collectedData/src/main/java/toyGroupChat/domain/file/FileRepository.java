@@ -1,5 +1,7 @@
 package toyGroupChat.domain.file;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -9,4 +11,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 )
 public interface FileRepository
     extends PagingAndSortingRepository<File, Long> {
+    Optional<File> findByFileId(Long fileId);
 }
