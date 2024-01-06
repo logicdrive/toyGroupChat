@@ -104,6 +104,18 @@ spring:
             - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
             - AuthorizationHeaderFilter
 
+        - id: collectedDataSocket
+          uri: ws://localhost:8087
+          predicates:
+            - Path=/socket/collectedData/**
+          filters:
+            - RewritePath=/socket/collectedData/(?<segment>.*), /socket/${segment}
+
+
+        - id: frontend
+          uri: http://localhost:3000
+          predicates:
+            - Path=/**
 ---
 
 spring:
