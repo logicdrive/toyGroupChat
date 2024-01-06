@@ -15,11 +15,17 @@ import javax.persistence.PreUpdate;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "App_RoomUser")
-@Data
 public class RoomUser {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
