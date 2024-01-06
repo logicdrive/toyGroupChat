@@ -72,6 +72,22 @@ spring:
             - RewritePath=/api/message/(?<segment>.*), /${segment}
             - AuthorizationHeaderFilter
 
+
+        - id: roomSanityCheck
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/room/sanityCheck
+          filters:
+            - RewritePath=/api/room/(?<segment>.*), /${segment}
+
+        - id: room
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/room/**
+          filters:
+            - RewritePath=/api/room/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
 ---
 
 spring:

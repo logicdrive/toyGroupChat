@@ -1,7 +1,8 @@
 package toyGroupChat.domain;
 
 import toyGroupChat.RoomApplication;
-
+import toyGroupChat._global.event.RoomCreated;
+import toyGroupChat._global.event.RoomCreaterAdded;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
 
@@ -99,5 +100,19 @@ public class RoomUser {
             String.format("%s is deleted by using JPA", this.getClass().getSimpleName()),
             String.format("{%s: %s}", this.getClass().getSimpleName(), this.toString())
         );
+    }
+
+
+    // 그룹 룸 생성시에 생성자를 그룹 룸 유저 목록에 추가시키기 위해서
+    public static void addRoomCreater(RoomCreated roomCreated) {
+        RoomUser savedRoomUser = repository().save(
+            RoomUser.builder()
+                .roomId(roomCreated.getId())
+                .userId(roomCreated.getCreaterUserId())
+                .build()
+        );
+
+        RoomCreaterAdded roomCreaterAdded = new RoomCreaterAdded(savedRoomUser);
+        roomCreaterAdded.publishAfterCommit();
     }
 }
