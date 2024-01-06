@@ -19,13 +19,13 @@ import toyGroupChat.domain.file.sanityCheck.reqDtos.MockProfileImageUploadedReqD
 @RequiredArgsConstructor
 @RequestMapping("/files/sanityCheck")
 public class FileSanityCheckController {
-    private final FileSanityCheckService userSanityCheckService;
+    private final FileSanityCheckService fileSanityCheckService;
 
     // Policy 테스트용으로 ProfileImageUploaded 이벤트를 강제로 발생시키기 위해서
     @PostMapping("/mock/ProfileImageUploaded")
     public void mockProfileImageUploaded(@RequestBody MockProfileImageUploadedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
-        this.userSanityCheckService.mockProfileImageUploaded(mockData);
+        this.fileSanityCheckService.mockProfileImageUploaded(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 
@@ -33,7 +33,7 @@ public class FileSanityCheckController {
     @PostMapping("/mock/ProfileImageUploadFailed")
     public void mockProfileImageUploadFailed(@RequestBody MockProfileImageUploadFailedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
-        this.userSanityCheckService.mockProfileImageUploadFailed(mockData);
+        this.fileSanityCheckService.mockProfileImageUploadFailed(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 
@@ -42,7 +42,7 @@ public class FileSanityCheckController {
     @PostMapping("/mock/FileUploaded")
     public void mockFileUploaded(@RequestBody MockFileUploadedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
-        this.userSanityCheckService.mockFileUploaded(mockData);
+        this.fileSanityCheckService.mockFileUploaded(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 
@@ -50,7 +50,7 @@ public class FileSanityCheckController {
     @PostMapping("/mock/FileUploadFailed")
     public void mockFileUploadFailed(@RequestBody MockFileUploadFailedReqDto mockData) {
         CustomLogger.debug(CustomLoggerType.ENTER, "", String.format("{mockData: %s}", mockData.toString()));
-        this.userSanityCheckService.mockFileUploadFailed(mockData);
+        this.fileSanityCheckService.mockFileUploadFailed(mockData);
         CustomLogger.debug(CustomLoggerType.EXIT);
     }
 }
