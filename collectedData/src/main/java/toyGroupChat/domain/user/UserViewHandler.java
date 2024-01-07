@@ -14,14 +14,13 @@ import toyGroupChat.domain.user.event.ProfileImageUploadRequested;
 import toyGroupChat.domain.user.event.SignUpCompleted;
 import toyGroupChat.domain.user.event.UserRemovedByFail;
 import toyGroupChat.domain.user.exceptions.UserNotFoundException;
-
-import toyGroupChat.webSocket.signUpSubscribe.SignUpSubscribeSocketHandler;
+import toyGroupChat.webSocket.subscribeSignUp.SubscribeSignUpSocketHandler;
 
 @Service
 @RequiredArgsConstructor
 public class UserViewHandler {
     private final UserRepository userRepository;
-    private final SignUpSubscribeSocketHandler signUpSubscribeSocketHandler;
+    private final SubscribeSignUpSocketHandler subscribeSignUpSocketHandler;
 
     @StreamListener(
         value = KafkaProcessor.INPUT,
@@ -74,7 +73,7 @@ public class UserViewHandler {
             User updatedUser = this.userRepository.save(userToUpdate);
 
 
-            this.signUpSubscribeSocketHandler.notifyUserUpdate(updatedUser);
+            this.subscribeSignUpSocketHandler.notifyUserUpdate(updatedUser);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{updatedUser: %s}", updatedUser.toString()));
 
         } catch (Exception e) {
@@ -103,7 +102,7 @@ public class UserViewHandler {
             User updatedUser = this.userRepository.save(userToUpdate);
 
 
-            this.signUpSubscribeSocketHandler.notifyUserUpdate(updatedUser);
+            this.subscribeSignUpSocketHandler.notifyUserUpdate(updatedUser);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{updatedUser: %s}", updatedUser.toString()));
 
         } catch (Exception e) {

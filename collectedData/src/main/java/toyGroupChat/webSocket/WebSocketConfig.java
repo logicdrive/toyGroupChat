@@ -6,9 +6,8 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import lombok.RequiredArgsConstructor;
-
 import toyGroupChat.webSocket.sanityCheck.SanityCheckSocketHandler;
-import toyGroupChat.webSocket.signUpSubscribe.SignUpSubscribeSocketHandler;
+import toyGroupChat.webSocket.subscribeSignUp.SubscribeSignUpSocketHandler;
 
 // WebSocket에 관련 경로들을 등록시키기 위해서
 @Configuration
@@ -17,11 +16,11 @@ import toyGroupChat.webSocket.signUpSubscribe.SignUpSubscribeSocketHandler;
 public class WebSocketConfig implements WebSocketConfigurer {
 
     private final SanityCheckSocketHandler sanityCheckSocketHandler;
-    private final SignUpSubscribeSocketHandler signUpSubscribeSocketHandler;
+    private final SubscribeSignUpSocketHandler subscribeSignUpSocketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(sanityCheckSocketHandler, "/socket/sanityCheck").setAllowedOrigins("*");
-        registry.addHandler(signUpSubscribeSocketHandler, "/socket/signUpSubscribe").setAllowedOrigins("*");
+        registry.addHandler(subscribeSignUpSocketHandler, "/socket/subscribeSignUp").setAllowedOrigins("*");
     }
 }

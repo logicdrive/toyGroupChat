@@ -1,4 +1,4 @@
-package toyGroupChat.webSocket.signUpSubscribe;
+package toyGroupChat.webSocket.subscribeSignUp;
 
 import org.json.JSONObject;
 import org.springframework.web.socket.TextMessage;
@@ -6,11 +6,11 @@ import org.springframework.web.socket.TextMessage;
 import lombok.ToString;
 
 @ToString
-public class SignUpSubscribeResDto {
+public class SubscribeSignUpResDto {
     Long userId;
     String userStatus;
 
-    public SignUpSubscribeResDto(Long userId, String userStatus) {
+    public SubscribeSignUpResDto(Long userId, String userStatus) {
         this.userId = userId;
         this.userStatus = userStatus;
     }
