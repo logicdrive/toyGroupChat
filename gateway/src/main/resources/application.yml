@@ -124,12 +124,81 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: userAuthCheck
+          uri: http://host.docker.internal:8082
+          predicates:
+            - Path=/api/user/sanityCheck/authenticationCheck
+          filters:
+            - RewritePath=/api/user/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
         - id: user
           uri: http://host.docker.internal:8082
           predicates:
             - Path=/api/user/**
           filters:
             - RewritePath=/api/user/(?<segment>.*), /${segment}
+
+
+        - id: messageSanityCheck
+          uri: http://host.docker.internal:8084
+          predicates:
+            - Path=/api/message/sanityCheck
+          filters:
+            - RewritePath=/api/message/(?<segment>.*), /${segment}
+
+        - id: message
+          uri: http://host.docker.internal:8084
+          predicates:
+            - Path=/api/message/**
+          filters:
+            - RewritePath=/api/message/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
+
+        - id: roomSanityCheck
+          uri: http://host.docker.internal:8085
+          predicates:
+            - Path=/api/room/sanityCheck
+          filters:
+            - RewritePath=/api/room/(?<segment>.*), /${segment}
+
+        - id: room
+          uri: http://host.docker.internal:8085
+          predicates:
+            - Path=/api/room/**
+          filters:
+            - RewritePath=/api/room/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
+
+        - id: collectedDataCheck
+          uri: http://host.docker.internal:8087
+          predicates:
+            - Path=/api/collectedData/sanityCheck
+          filters:
+            - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
+
+        - id: collectedData
+          uri: http://host.docker.internal:8087
+          predicates:
+            - Path=/api/collectedData/**
+          filters:
+            - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
+        - id: collectedDataSocket
+          uri: ws://host.docker.internal:8087
+          predicates:
+            - Path=/socket/collectedData/**
+          filters:
+            - RewritePath=/socket/collectedData/(?<segment>.*), /socket/${segment}
+
+
+        - id: frontend
+          uri: http://host.docker.internal:3000
+          predicates:
+            - Path=/**
 
 ---
 
@@ -139,9 +208,78 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: userAuthCheck
+          uri: http://user:8080
+          predicates:
+            - Path=/api/user/sanityCheck/authenticationCheck
+          filters:
+            - RewritePath=/api/user/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
         - id: user
           uri: http://user:8080
           predicates:
             - Path=/api/user/**
           filters:
             - RewritePath=/api/user/(?<segment>.*), /${segment}
+
+
+        - id: messageSanityCheck
+          uri: http://message:8080
+          predicates:
+            - Path=/api/message/sanityCheck
+          filters:
+            - RewritePath=/api/message/(?<segment>.*), /${segment}
+
+        - id: message
+          uri: http://message:8080
+          predicates:
+            - Path=/api/message/**
+          filters:
+            - RewritePath=/api/message/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
+
+        - id: roomSanityCheck
+          uri: http://room:8080
+          predicates:
+            - Path=/api/room/sanityCheck
+          filters:
+            - RewritePath=/api/room/(?<segment>.*), /${segment}
+
+        - id: room
+          uri: http://room:8080
+          predicates:
+            - Path=/api/room/**
+          filters:
+            - RewritePath=/api/room/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
+
+        - id: collectedDataCheck
+          uri: http://collected-data:8080
+          predicates:
+            - Path=/api/collectedData/sanityCheck
+          filters:
+            - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
+
+        - id: collectedData
+          uri: http://collected-data:8080
+          predicates:
+            - Path=/api/collectedData/**
+          filters:
+            - RewritePath=/api/collectedData/(?<segment>.*), /${segment}
+            - AuthorizationHeaderFilter
+
+        - id: collectedDataSocket
+          uri: ws://collected-data:8080
+          predicates:
+            - Path=/socket/collectedData/**
+          filters:
+            - RewritePath=/socket/collectedData/(?<segment>.*), /socket/${segment}
+
+
+        - id: frontend
+          uri: http://frontend:3000
+          predicates:
+            - Path=/**

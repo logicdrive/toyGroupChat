@@ -79,3 +79,10 @@ services:
       - "8087:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+
+  groupchat_gateway:
+    image: sinsung6722/groupchat_gateway:v1
+    ports:
+      - "8088:8088"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
