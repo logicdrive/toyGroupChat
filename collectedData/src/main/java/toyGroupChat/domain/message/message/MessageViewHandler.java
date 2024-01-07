@@ -16,10 +16,13 @@ import toyGroupChat.domain.message.event.FileUploadRequested;
 import toyGroupChat.domain.message.event.MessageCreated;
 import toyGroupChat.domain.message.event.MessageRemovedByFail;
 
+import toyGroupChat.webSocket.subscribeMessageCreated.SubscribeMessageCreatedSocketHandler;
+
 @Service
 @RequiredArgsConstructor
 public class MessageViewHandler {
     private final MessageRepository messageRepository;
+    private final SubscribeMessageCreatedSocketHandler subscribeMessageCreatedSocketHandler;
 
    @StreamListener(
         value = KafkaProcessor.INPUT,
@@ -73,6 +76,7 @@ public class MessageViewHandler {
             this.messageRepository.save(messageToSave);
 
 
+            this.subscribeMessageCreatedSocketHandler.notifyMessageCreated(messageToSave);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{messageToSave: %s}", messageToSave.toString()));
 
         } catch (Exception e) {
@@ -94,8 +98,11 @@ public class MessageViewHandler {
 
             Optional<Message> optionalMessage = this.messageRepository.findByMessageId(messageRemovedByFail.getId());
             if(!(optionalMessage.isPresent())) return;
+            Message messageToUpdate = optionalMessage.get();
 
-            this.messageRepository.delete(optionalMessage.get());
+            messageToUpdate.setStatus("MessageRemovedByFail");
+            Message updatedMessage = this.messageRepository.save(messageToUpdate);
+            this.subscribeMessageCreatedSocketHandler.notifyMessageCreated(updatedMessage);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{deletedMessage: %s}", optionalMessage.get().toString()));
 
         } catch (Exception e) {

@@ -8,6 +8,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import lombok.RequiredArgsConstructor;
 
 import toyGroupChat.webSocket.sanityCheck.SanityCheckSocketHandler;
+import toyGroupChat.webSocket.subscribeMessageCreated.SubscribeMessageCreatedSocketHandler;
 import toyGroupChat.webSocket.subscribeRoomCreater.SubscribeRoomCreaterSocketHandler;
 import toyGroupChat.webSocket.subscribeSignUp.SubscribeSignUpSocketHandler;
 
@@ -20,11 +21,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private final SanityCheckSocketHandler sanityCheckSocketHandler;
     private final SubscribeSignUpSocketHandler subscribeSignUpSocketHandler;
     private final SubscribeRoomCreaterSocketHandler subscribeRoomCreaterSocketHandler;
+    private final SubscribeMessageCreatedSocketHandler subscribeMessageCreatedSocketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(sanityCheckSocketHandler, "/socket/sanityCheck").setAllowedOrigins("*");
         registry.addHandler(subscribeSignUpSocketHandler, "/socket/subscribeSignUp").setAllowedOrigins("*");
         registry.addHandler(subscribeRoomCreaterSocketHandler, "/socket/subscribeRoomCreater").setAllowedOrigins("*");
+        registry.addHandler(subscribeMessageCreatedSocketHandler, "/socket/subscribeMessageCreated").setAllowedOrigins("*");
     }
 }
