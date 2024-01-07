@@ -40,3 +40,13 @@ services:
       - "8083:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+
+  groupchat_externalsystem:
+    image: sinsung6722/groupchat_externalsystem:v1
+    ports:
+      - "8086:8086"
+    environment:
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_BUCKET_NAME: "sinsung6722-toygroupchat"
+      AWS_REGION_CODE: "ap-northeast-2"
