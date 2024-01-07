@@ -13,10 +13,13 @@ import toyGroupChat._global.logger.CustomLoggerType;
 import toyGroupChat.domain.room.event.RoomCreaterAdded;
 import toyGroupChat.domain.room.event.RoomUserAdded;
 
+import toyGroupChat.webSocket.subscribeRoomCreater.SubscribeRoomCreaterSocketHandler;
+
 @Service
 @RequiredArgsConstructor
 public class RoomUserViewHandler {
     private final RoomUserRepository roomUserRepository;
+    private final SubscribeRoomCreaterSocketHandler subscribeRoomCreaterSocketHandler;
 
    @StreamListener(
         value = KafkaProcessor.INPUT,
@@ -38,6 +41,7 @@ public class RoomUserViewHandler {
                     .build()
             );
 
+            subscribeRoomCreaterSocketHandler.notifyRoomUserUpdate(savedRoomUser);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{savedRoomUser: %s}", savedRoomUser.toString()));
 
         } catch (Exception e) {
