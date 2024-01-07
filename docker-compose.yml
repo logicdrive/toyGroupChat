@@ -50,3 +50,13 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_BUCKET_NAME: "sinsung6722-toygroupchat"
       AWS_REGION_CODE: "ap-northeast-2"
+
+
+  groupchat_message:
+    image: sinsung6722/groupchat_message:v1
+    depends_on:
+      - kafka
+    ports:
+      - "8084:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
