@@ -69,3 +69,13 @@ services:
       - "8085:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+
+
+  groupchat_collecteddata:
+    image: sinsung6722/groupchat_collecteddata:v1
+    depends_on:
+      - kafka
+    ports:
+      - "8087:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
