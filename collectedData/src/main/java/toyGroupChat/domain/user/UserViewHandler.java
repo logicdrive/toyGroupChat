@@ -5,18 +5,23 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+
 import toyGroupChat._global.config.kafka.KafkaProcessor;
 import toyGroupChat._global.logger.CustomLogger;
 import toyGroupChat._global.logger.CustomLoggerType;
+
 import toyGroupChat.domain.user.event.ProfileImageUploadRequested;
 import toyGroupChat.domain.user.event.SignUpCompleted;
 import toyGroupChat.domain.user.event.UserRemovedByFail;
 import toyGroupChat.domain.user.exceptions.UserNotFoundException;
 
+import toyGroupChat.webSocket.signUpSubscribe.SignUpSubscribeSocketHandler;
+
 @Service
 @RequiredArgsConstructor
 public class UserViewHandler {
     private final UserRepository userRepository;
+    private final SignUpSubscribeSocketHandler signUpSubscribeSocketHandler;
 
     @StreamListener(
         value = KafkaProcessor.INPUT,
@@ -69,6 +74,7 @@ public class UserViewHandler {
             User updatedUser = this.userRepository.save(userToUpdate);
 
 
+            this.signUpSubscribeSocketHandler.notifyUserUpdate(updatedUser);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{updatedUser: %s}", updatedUser.toString()));
 
         } catch (Exception e) {
@@ -97,6 +103,7 @@ public class UserViewHandler {
             User updatedUser = this.userRepository.save(userToUpdate);
 
 
+            this.signUpSubscribeSocketHandler.notifyUserUpdate(updatedUser);
             CustomLogger.debug(CustomLoggerType.EXIT, "", String.format("{updatedUser: %s}", updatedUser.toString()));
 
         } catch (Exception e) {
