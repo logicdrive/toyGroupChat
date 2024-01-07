@@ -18,7 +18,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import lombok.RequiredArgsConstructor;
 
-// 특정 회원가입 상태를 감시하고, 상태 변화를 알리기 위해서
+// 요청된 룸의 생성여부를 확인하기 위해서
 @Component
 @RequiredArgsConstructor
 public class SubscribeRoomCreaterSocketHandler extends TextWebSocketHandler {
