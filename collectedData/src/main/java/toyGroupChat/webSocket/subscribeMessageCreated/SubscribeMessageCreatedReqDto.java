@@ -9,10 +9,10 @@ import lombok.ToString;
 @ToString
 @Getter
 public class SubscribeMessageCreatedReqDto {
-    Long messageId;
+    Long roomId;
 
     public SubscribeMessageCreatedReqDto(TextMessage textMessage) {
         JSONObject jsonObject = new JSONObject(textMessage.getPayload());
-        this.messageId = jsonObject.getLong("messageId");
+        this.roomId = jsonObject.getLong("roomId");
     }
 }
