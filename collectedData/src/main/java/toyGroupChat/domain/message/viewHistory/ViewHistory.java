@@ -32,7 +32,7 @@ public class ViewHistory {
     private Long id;
 
     private Long messageId;
-    private Long usrId;
+    private Long userId;
 
 
     @PrePersist

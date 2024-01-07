@@ -14,4 +14,5 @@ public interface RoomUserRepository
     extends PagingAndSortingRepository<RoomUser, Long> {
     Optional<RoomUser> findByRoomId(Long roomId);
     List<RoomUser> findAllByUserId(Long userId);
+    List<RoomUser> findAllByRoomId(Long roomId);
 }
