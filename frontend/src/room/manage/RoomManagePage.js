@@ -5,7 +5,7 @@ import NavButton from '../../_global/button/NavButton';
 import NavNavigationButtion from '../../_global/button/NavNavigationButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { Card, Stack, Box, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Card, Stack, Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 const RoomManagePage = () => {
     const [isAddRoomDialogOpend, setIsAddRoomDialogOpend] = useState(false);
