@@ -11,7 +11,7 @@ class RoomProxy {
         const response = await axios.put(`http://${window.location.host}/api/room/rooms/createRoom`, reqDto, requestHeader);
         
         console.log(response)
-        return response.data
+        return response.data.id;
     }
 }
 

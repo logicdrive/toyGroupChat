@@ -35,8 +35,8 @@ const RoomManagePage = () => {
 
         try {
 
-            const roomInfo = await RoomProxy.createRoom(inputedRoomName, jwtTokenState);
-            subscribeRoomCreaterStatus(roomInfo.id)
+            const roomId = await RoomProxy.createRoom(inputedRoomName, jwtTokenState);
+            subscribeRoomCreaterStatus(roomId)
 
         } catch(error) {
             addAlertPopUp("그룹채팅 추가 도중에 오류가 발생했습니다!", "error");
@@ -64,7 +64,20 @@ const RoomManagePage = () => {
         return async () => {
             try {
     
-                setJoinedRooms((await CollectedDataProxy.joinedRooms(jwtTokenState)));
+                let modifiedJoinedRooms = await CollectedDataProxy.joinedRooms(jwtTokenState);
+                for(let roomIndex=0; roomIndex<modifiedJoinedRooms.length; roomIndex++)
+                {
+                    let modifiedJoinedRoom = modifiedJoinedRooms[roomIndex];
+
+                    const roomUserInfo = await CollectedDataProxy.roomUsersByRoomId(modifiedJoinedRoom.roomId, jwtTokenState);
+                    modifiedJoinedRoom.userCount = roomUserInfo.length;
+
+                    const messagesInfo = await CollectedDataProxy.messagesWithoutCheck(modifiedJoinedRoom.roomId, jwtTokenState);
+                    modifiedJoinedRoom.lastestMessage = ((messagesInfo.length === 0) ? "최근 메세지가 없습니다." : messagesInfo[messagesInfo.length-1])
+                }
+
+                console.log(modifiedJoinedRooms);
+                setJoinedRooms(modifiedJoinedRooms);
     
             } catch (error) {
                 addAlertPopUp("참여된 그룹 채팅 목록을 로드하는 도중 에러가 발생했습니다!", "error");
@@ -125,15 +138,15 @@ const RoomManagePage = () => {
                                         {joinedRoom.name}
                                     </BoldText>
                                     <BoldText sx={{float: "left", position: "relative", left: 5, color: "gray"}}>
-                                        [32]
+                                        [{joinedRoom.userCount}]
                                     </BoldText>
                                     <BoldText sx={{float: "right", color: "gray"}}>
-                                        2013.03.09
+                                        {new Date(joinedRoom.createdDate).toISOString().replace('T', ' ').slice(0, -5)}
                                     </BoldText>
                                 </Box>
                                 <Box>
                                     <BoldText sx={{color: "gray"}}>
-                                        TEST MESSAGE
+                                        {joinedRoom.lastestMessage}
                                     </BoldText>
                                 </Box>
                             </Stack>
