@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: collected-data
+  labels:
+    app: collected-data
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: collected-data

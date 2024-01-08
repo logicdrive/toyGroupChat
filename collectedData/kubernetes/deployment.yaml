@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collected-data
+  labels:
+    app: collected-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collected-data
+  template:
+    metadata:
+      labels:
+        app: collected-data
+    spec:
+      containers:
+        - name: collected-data
+          image: sinsung6722/groupchat_collecteddata:v2
+          ports:
+            - containerPort: 8080
+          
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernates
+
+          livenessProbe:
+            httpGet:
+              path: '/sanityCheck'
+              port: 8080
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            successThreshold: 1
+            periodSeconds: 10
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: '/sanityCheck'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
