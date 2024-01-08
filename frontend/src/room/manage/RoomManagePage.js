@@ -50,7 +50,7 @@ const RoomManagePage = () => {
         return (userId, roomId) => {
             addAlertPopUp("그륩채팅 생성이 정상적으로 수행되었습니다.", "success");
             setIsBackdropOpened(false);
-            navigate(0);
+            loadJoinedRooms();
         }
     })
 
@@ -60,18 +60,22 @@ const RoomManagePage = () => {
 
     const [joinedRooms, setJoinedRooms] = useState([]);
 
-    useEffect(() => {
-        (async () => {
+    const [loadJoinedRooms] = useState(() => {
+        return async () => {
             try {
-
+    
                 setJoinedRooms((await CollectedDataProxy.joinedRooms(jwtTokenState)));
-
+    
             } catch (error) {
                 addAlertPopUp("참여된 그룹 채팅 목록을 로드하는 도중 에러가 발생했습니다!", "error");
                 console.error("참여된 그룹 채팅 목록을 로드하는 도중 에러가 발생했습니다!", error);
             }
-        })()
-    }, [jwtTokenState, addAlertPopUp]);
+        }
+    })
+
+    useEffect(() => {
+        loadJoinedRooms();
+    }, [loadJoinedRooms]);
 
 
 
