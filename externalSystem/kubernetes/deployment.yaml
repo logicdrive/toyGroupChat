@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-system
+  labels:
+    app: external-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: external-system
+  template:
+    metadata:
+      labels:
+        app: external-system
+    spec:
+      containers:
+        - name: external-system
+          image: sinsung6722/groupchat_externalsystem:v1
+          ports:
+            - containerPort: 8086
+
+          env:
+            - name: AWS_ACCESS_KEY
+              value: AWS_ACCESS_KEY_VALUE
+            - name: AWS_SECRET_ACCESS_KEY
+              value: AWS_SECRET_ACCESS_KEY_VALUE
+            - name: AWS_BUCKET_NAME
+              value: sinsung6722-toygroupchat
+            - name: AWS_REGION_CODE
+              value: ap-northeast-2
+
+          livenessProbe:
+            httpGet:
+              path: '/sanityCheck/'
+              port: 8086
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            successThreshold: 1
+            periodSeconds: 60
+            failureThreshold: 3
