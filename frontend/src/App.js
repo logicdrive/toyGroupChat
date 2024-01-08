@@ -23,7 +23,7 @@ function App() {
                   <Route path="/user/signIn" element={<UserSignInPage/>} />
 
                   <Route path="/room/manage" element={<RoomManagePage/>} />
-                  <Route path="/room/share" element={<RoomSharePage/>} />
+                  <Route path="/room/share/:sharedCode" element={<RoomSharePage/>} />
                   <Route path="/room/chat/:roomId" element={<RoomChatPage/>} />
               </Routes>
           </Router>

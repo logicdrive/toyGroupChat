@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardMedia, Stack, Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LinkIcon from '@mui/icons-material/Link';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import SendIcon from '@mui/icons-material/Send';
+import { AlertPopupContext } from '../../_global/alertPopUp/AlertPopUpContext'
+import { JwtTokenContext } from "../../_global/jwtToken/JwtTokenContext";
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavButton from '../../_global/button/IconButton';
 import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 import FileUploadButton from "../../_global/button/FileUploadButton";
+import CollectedDataProxy from '../../_global/proxy/CollectedDataProxy';
 
 const RoomChatPage = () => {
-    const { roomId } = useParams();
+    const {addAlertPopUp} = useContext(AlertPopupContext);
+    const {jwtTokenState} = useContext(JwtTokenContext);
+    const {roomId} = useParams();
     const [isSharedLinkDialogOpend, setIsSharedLinkDialogOpend] = useState(false);
 
     const [uploadedImageSrc, setUploadedImageSrc] = useState("");
@@ -20,11 +25,26 @@ const RoomChatPage = () => {
       setUploadedImageSrc(imageDataUrl);
     }
 
-    console.log("ID : " + roomId)
+
+    const [roomInfo, setRoomInfo] = useState({});
+
+    useEffect(() => {
+        (async () => {
+            try {
+
+                setRoomInfo((await CollectedDataProxy.roomByRoomId(roomId, jwtTokenState)))
+
+            } catch (error) {
+                addAlertPopUp("그룹 채팅 정보를 가져오는 과정에서 오류가 발생했습니다!", "error");
+                console.error("그룹 채팅 정보를 가져오는 과정에서 오류가 발생했습니다!", error);
+            }
+        })()
+    }, [addAlertPopUp, jwtTokenState, roomId])
+
 
     return (
         <div>
-            <TopAppBar title="TEST ROOM 1">
+            <TopAppBar title={roomInfo.name}>
                 <NavButton sx={{marginRight: 1}} onClick={() => {setIsSharedLinkDialogOpend(true)}}>
                     <LinkIcon sx={{fontSize: 35, paddingTop: 0.3}}/>
                 </NavButton>
@@ -44,7 +64,7 @@ const RoomChatPage = () => {
                         fullWidth
 
                         sx={{width: 400}}
-                        value={"http://sharedlink.com"}
+                        value={`http://${window.location.host}/room/share/${roomInfo.sharedCode}`}
                     />
                 </DialogContent>
 
