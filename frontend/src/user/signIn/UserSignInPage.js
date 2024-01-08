@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
+import { Card, Stack, TextField, Button } from '@mui/material';
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
-import { Card, Stack, TextField, Button } from '@mui/material';
 
 const UserSignInPage = () => {
+    const navigate = useNavigate();
 
     return (
         <>
@@ -28,7 +30,7 @@ const UserSignInPage = () => {
 
 
                     <Button variant="contained" sx={{marginTop: 6, width: 400, marginX: "auto"}}>로그인</Button>
-                    <Button variant="text" sx={{marginTop: 3, marginBottom: 5, width: 400, marginX: "auto"}}>회원가입</Button>
+                    <Button onClick={() => {navigate("/user/signUp")}} variant="text" sx={{marginTop: 3, marginBottom: 5, width: 400, marginX: "auto"}}>회원가입</Button>
                 </Stack>
             </Card>
         </>
