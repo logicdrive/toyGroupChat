@@ -57,6 +57,39 @@ class CollectedDataProxy {
         console.log(response)
         return response.data._embedded.messages
     }
+
+    // 해당 그룹채팅방의 메세지들을 불러오고, 확인 표시를 함
+    static async messagesWithCheck(roomId, jwtTokenState) {
+        console.log(`[EFFECT] messagesWithCheck : <roomId:${roomId}>`)
+        
+        const requestHeader = {headers: {Authorization: jwtTokenState.jwtToken.Authorization}};
+        const response = await axios.get(`http://${window.location.host}/api/collectedData/messages/messagesWithCheck?roomId=${roomId}`, requestHeader);
+        
+        console.log(response)
+        return response.data.messages;
+    }
+
+
+    static async findByUserId(userId, jwtTokenState) {
+        console.log(`[EFFECT] messagesWithCheck : <userId:${userId}>`)
+        
+        const requestHeader = {headers: {Authorization: jwtTokenState.jwtToken.Authorization}};
+        const response = await axios.get(`http://${window.location.host}/api/collectedData/users/search/findByUserId?userId=${userId}`, requestHeader);
+        
+        console.log(response)
+        return response.data;
+    }
+
+
+    static async findByFileId(fileId, jwtTokenState) {
+        console.log(`[EFFECT] findByFileId : <fileId:${fileId}>`)
+        
+        const requestHeader = {headers: {Authorization: jwtTokenState.jwtToken.Authorization}};
+        const response = await axios.get(`http://${window.location.host}/api/collectedData/files/search/findByFileId?fileId=${fileId}`, requestHeader);
+        
+        console.log(response)
+        return response.data;
+    }
 }
 
-export default CollectedDataProxy
+export default CollectedDataProxy;
