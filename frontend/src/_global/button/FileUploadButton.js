@@ -1,7 +1,6 @@
 // 파일 업로드시에 (fileName, dataUrl) 형태로 콜백을 일으키기 위해서
 
 import { React, useState, useRef } from 'react';
-import { Box } from '@mui/material';
 
 const FileUploadButton = ({accept, onUploadFile, children, ...props}) => {
     const fileUploadRef = useRef()
