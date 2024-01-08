@@ -50,7 +50,7 @@ public class SubscribeMessageCreatedSocketHandler extends TextWebSocketHandler {
                 if(!session.isOpen())
                 {
                     subscribedSessions.remove(sessionId);
-                    return;
+                    continue;
                 }
 
 

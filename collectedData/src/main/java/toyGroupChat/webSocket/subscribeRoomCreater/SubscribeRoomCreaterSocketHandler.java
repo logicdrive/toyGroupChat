@@ -68,7 +68,7 @@ public class SubscribeRoomCreaterSocketHandler extends TextWebSocketHandler {
                 if(!session.isOpen())
                 {
                     subscribedSessions.remove(sessionId);
-                    return;
+                    continue;
                 }
 
 

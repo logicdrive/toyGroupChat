@@ -67,7 +67,7 @@ public class SubscribeSignUpSocketHandler extends TextWebSocketHandler {
                 if(!session.isOpen())
                 {
                     subscribedSessions.remove(sessionId);
-                    return;
+                    continue;
                 }
 
                 SubscribeSignUpResDto subscribeSignUpResDto = new SubscribeSignUpResDto(user.getUserId(), user.getStatus());
