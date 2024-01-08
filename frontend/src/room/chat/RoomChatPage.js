@@ -94,6 +94,7 @@ const RoomChatPage = () => {
                 for(let messageIndex=0; messageIndex<modifiedRoomMessages.length; messageIndex++)
                 {
                     let modifiedRoomMessage = modifiedRoomMessages[messageIndex];
+                    modifiedRoomMessage.createdDatePretty = new Date(modifiedRoomMessage.createdDate).toISOString().replace('T', ' ').slice(0, -5)
 
                     const resUserInfo = await CollectedDataProxy.findByUserId(modifiedRoomMessage.userId, jwtTokenState);
                     modifiedRoomMessage.profileImageFileId = resUserInfo.profileImageFileId;
@@ -195,6 +196,14 @@ const RoomChatPage = () => {
                                                 <BoldText sx={{padding: 1, backgroundColor: "rgb(236 236 236)", borderRadius: "1rem", display: "inline", float: "right"}}>
                                                     {roomMessage.content}         
                                                 </BoldText>
+                                                <Stack sx={{float: "right", textAlign: "right"}}>
+                                                    <BoldText sx={{float: "right", marginTop: 0.9, marginRight: 1, color: "cornflowerblue", fontSize: 10}}>
+                                                        {roomMessage.unwatchCount}
+                                                    </BoldText>
+                                                    <BoldText sx={{float: "right", marginTop: 0.0, marginRight: 1, color: "lightgray", fontSize: 10}}>
+                                                        {roomMessage.createdDatePretty}
+                                                    </BoldText>
+                                                </Stack>
                                             </Box>
                                         </Stack>
                                     </Box>
@@ -226,9 +235,17 @@ const RoomChatPage = () => {
                                             }
                 
                                             <Box sx={{marginTop: 1}}>
-                                                <BoldText sx={{padding: 1, backgroundColor: "rgb(236 236 236)", borderRadius: "1rem", display: "inline"}}>
+                                                <BoldText sx={{padding: 1, backgroundColor: "rgb(236 236 236)", borderRadius: "1rem", display: "inline", float: "left"}}>
                                                     {roomMessage.content}         
                                                 </BoldText>
+                                                <Stack sx={{paddingLeft: 0.8}}>
+                                                    <BoldText sx={{marginTop: 0.9, marginRight: 1, color: "cornflowerblue", fontSize: 10}}>
+                                                        {roomMessage.unwatchCount}
+                                                    </BoldText>
+                                                    <BoldText sx={{marginTop: 0.0, marginRight: 1, color: "lightgray", fontSize: 10}}>
+                                                        {roomMessage.createdDatePretty}
+                                                    </BoldText>
+                                                </Stack>
                                             </Box>
                                         </Stack>
                                     </Box>

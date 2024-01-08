@@ -73,7 +73,9 @@ const RoomManagePage = () => {
                     modifiedJoinedRoom.userCount = roomUserInfo.length;
 
                     const messagesInfo = await CollectedDataProxy.messagesWithoutCheck(modifiedJoinedRoom.roomId, jwtTokenState);
-                    modifiedJoinedRoom.lastestMessage = ((messagesInfo.length === 0) ? "최근 메세지가 없습니다." : messagesInfo[messagesInfo.length-1])
+                    modifiedJoinedRoom.lastestMessage = ((messagesInfo.length === 0) ? "최근 메세지가 없습니다." : messagesInfo[messagesInfo.length-1].content)
+                    
+                    modifiedJoinedRoom.lastestDate = new Date((messagesInfo.length === 0) ? modifiedJoinedRoom.createdDate : messagesInfo[messagesInfo.length-1].createdDate).toISOString().replace('T', ' ').slice(0, -5)
                 }
 
                 console.log(modifiedJoinedRooms);
@@ -141,7 +143,7 @@ const RoomManagePage = () => {
                                         [{joinedRoom.userCount}]
                                     </BoldText>
                                     <BoldText sx={{float: "right", color: "gray"}}>
-                                        {new Date(joinedRoom.createdDate).toISOString().replace('T', ' ').slice(0, -5)}
+                                        {joinedRoom.lastestDate}
                                     </BoldText>
                                 </Box>
                                 <Box>
