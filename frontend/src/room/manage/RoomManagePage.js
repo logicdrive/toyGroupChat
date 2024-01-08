@@ -131,7 +131,7 @@ const RoomManagePage = () => {
             <Stack spacing={1} sx={{marginTop: 3}}>
                 {
                     joinedRooms.map((joinedRoom, index) => {
-                        return  <Card onClick={() => {navigate(`/room/chat?roomId=${joinedRoom.roomId}`);}} key={index} variant="outlined" sx={{ padding: 1.5, height: 50, cursor: "pointer" }}>
+                        return  <Card onClick={() => {navigate(`/room/chat/${joinedRoom.roomId}`);}} key={index} variant="outlined" sx={{ padding: 1.5, height: 50, cursor: "pointer" }}>
                             <Stack spacing={1}>
                                 <Box>
                                     <BoldText sx={{float: "left"}}>

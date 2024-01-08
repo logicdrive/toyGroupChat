@@ -18,11 +18,13 @@ function App() {
           <Router>
             <Routes>
                   <Route path="/" element={<UserSignInPage/>} />
+
                   <Route path="/user/signUp" element={<UserSignUpPage/>} />
                   <Route path="/user/signIn" element={<UserSignInPage/>} />
+
                   <Route path="/room/manage" element={<RoomManagePage/>} />
                   <Route path="/room/share" element={<RoomSharePage/>} />
-                  <Route path="/room/chat" element={<RoomChatPage/>} />
+                  <Route path="/room/chat/:roomId" element={<RoomChatPage/>} />
               </Routes>
           </Router>
           <AlertPopUpList/>

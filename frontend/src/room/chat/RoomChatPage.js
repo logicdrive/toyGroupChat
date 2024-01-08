@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Card, CardMedia, Stack, Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LinkIcon from '@mui/icons-material/Link';
@@ -11,12 +12,15 @@ import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 import FileUploadButton from "../../_global/button/FileUploadButton";
 
 const RoomChatPage = () => {
+    const { roomId } = useParams();
     const [isSharedLinkDialogOpend, setIsSharedLinkDialogOpend] = useState(false);
 
     const [uploadedImageSrc, setUploadedImageSrc] = useState("");
     const onUploadImage = (imageName, imageDataUrl) => {
       setUploadedImageSrc(imageDataUrl);
     }
+
+    console.log("ID : " + roomId)
 
     return (
         <div>
