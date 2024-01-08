@@ -10,7 +10,7 @@ const UserSignUpPage = () => {
     return (
         <div>
             <TopAppBar title="회원가입">
-                <NavNavigationButtion url="/user/signIn" sx={{position: "relative", left: 6}}>
+                <NavNavigationButtion url="/user/signIn">
                     <ArrowBackIcon sx={{fontSize: 40}}/>
                 </NavNavigationButtion>
             </TopAppBar>
