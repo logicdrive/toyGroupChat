@@ -15,6 +15,7 @@ import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 import FileUploadButton from "../../_global/button/FileUploadButton";
 import CollectedDataProxy from '../../_global/proxy/CollectedDataProxy';
 import MessageProxy from '../../_global/proxy/MessageProxy';
+import SubscribeMessageCreatedSocket from "../../_global/socket/SubscribeMessageCreatedSocket"
 
 const RoomChatPage = () => {
     const {addAlertPopUp} = useContext(AlertPopupContext);
@@ -43,6 +44,7 @@ const RoomChatPage = () => {
             setUploadedImageName("");
             setInputedContent("");
             
+            addAlertPopUp("성공적으로 메세지가 추가되었습니다.", "success");
             setIsBackdropOpened(false);
 
         } catch(error) {
@@ -52,6 +54,19 @@ const RoomChatPage = () => {
             setIsBackdropOpened(false);
         }
     }
+
+
+    const [notifiedMessageCreatedStatus] = useState(() => {
+        return (messageId, messageStatus) => {
+            loadRoomMessages();
+        }
+    })
+
+    const [subscribeRoomCreaterStatus] = SubscribeMessageCreatedSocket(notifiedMessageCreatedStatus);
+
+    useEffect(() => {
+        subscribeRoomCreaterStatus(roomId)
+    }, [subscribeRoomCreaterStatus, roomId])
 
 
     const [roomInfo, setRoomInfo] = useState({});
@@ -145,7 +160,7 @@ const RoomChatPage = () => {
             </Dialog>
     
 
-            <Card sx={{marginTop: 3, padding: 1, height: 645}}>
+            <Card sx={{marginTop: 3, padding: 1, height: 645, overflowY: "scroll"}}>
                 <Stack>
 
                     {
