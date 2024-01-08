@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavNavigationButtion from '../../_global/button/IconNavigationButton';
+import UserProxy from '../../_global/proxy/UserProxy';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FileUploadButton from "../../_global/button/FileUploadButton";
 import ImageIcon from '@mui/icons-material/Image';
@@ -13,6 +14,7 @@ const UserSignUpPage = () => {
       setUploadedImageSrc(imageDataUrl);
     }
 
+    UserProxy.signUp("email", "password", "name", "url");
 
     return (
         <div>
@@ -36,6 +38,12 @@ const UserSignUpPage = () => {
                     <TextField
                         label="비밀번호"
                         name="email"
+                        sx={{marginTop: 3, width: 400, marginX: "auto"}}
+                    />
+
+                    <TextField
+                        label="닉네임"
+                        name="name"
                         sx={{marginTop: 3, width: 400, marginX: "auto"}}
                     />
 
@@ -65,8 +73,8 @@ const UserSignUpPage = () => {
                     </FileUploadButton>
 
 
-                    <Button variant="contained" sx={{marginTop: 6, width: 400, marginX: "auto"}}>회원가입</Button>
-                    <Button variant="text" sx={{marginTop: 3, marginBottom: 5, width: 400, marginX: "auto"}}>돌아가기</Button>
+                    <Button variant="contained" sx={{marginTop: 5, width: 400, marginX: "auto"}}>회원가입</Button>
+                    <Button variant="text" sx={{marginTop: 3, marginBottom: 2, width: 400, marginX: "auto"}}>돌아가기</Button>
                 </Stack>
             </Card>
         </div>
