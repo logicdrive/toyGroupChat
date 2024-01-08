@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Card, Stack, Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LogoutIcon from '@mui/icons-material/Logout';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { JwtTokenContext } from "../../_global/jwtToken/JwtTokenContext";
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavButton from '../../_global/button/IconButton';
-import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 
 const RoomManagePage = () => {
+    const { jwtTokenState, deleteTokenValue } = useContext(JwtTokenContext);
+    const navigate = useNavigate();
     const [isAddRoomDialogOpend, setIsAddRoomDialogOpend] = useState(false);
 
+    useEffect(() => {
+        if(jwtTokenState.jwtToken === null) {
+            navigate("/user/signIn");
+        }
+    }, [jwtTokenState.jwtToken, navigate])
+
+    
     const handleAddRoomSubmit = () => {
 
     }
@@ -18,13 +28,13 @@ const RoomManagePage = () => {
     return (
         <div>
             <TopAppBar title="그룹채팅">
-                <NavButton sx={{marginRight: 1}} onClick={() => {setIsAddRoomDialogOpend(true)}}>
+                <NavButton sx={{marginRight: 1}} onClick={() => {setIsAddRoomDialogOpend(true);}}>
                     <GroupAddIcon sx={{fontSize: 35, paddingTop: 0.3}}/>
                 </NavButton>
                 
-                <NavNavigationButtion url="/user/signIn">
-                    <ArrowBackIcon sx={{fontSize: 40}}/>
-                </NavNavigationButtion>
+                <NavButton sx={{marginRight: 1}} onClick={() => {deleteTokenValue();}}>
+                    <LogoutIcon sx={{fontSize: 35, paddingTop: 0.3, paddingLeft: 0.3}}/>
+                </NavButton>
             </TopAppBar>
 
             <Dialog open={isAddRoomDialogOpend} onClose={()=>{setIsAddRoomDialogOpend(false);}}>

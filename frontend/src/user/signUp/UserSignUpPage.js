@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Card, Stack, TextField, Button, Box, Backdrop, CircularProgress } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ImageIcon from '@mui/icons-material/Image';
 import { AlertPopupContext } from '../../_global/alertPopUp/AlertPopUpContext'
+import { JwtTokenContext } from "../../_global/jwtToken/JwtTokenContext";
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavNavigationButtion from '../../_global/button/IconNavigationButton';
@@ -14,9 +15,16 @@ import SubscribeSignUpSocket from '../../_global/socket/SubscribeSignUpSocket';
 
 const UserSignUpPage = () => {
     const {addAlertPopUp} = useContext(AlertPopupContext);
+    const { jwtTokenState } = useContext(JwtTokenContext);
     const navigate = useNavigate();
     const [isBackdropOpened, setIsBackdropOpened] = useState(false)
     SanityCheckSocket();
+
+    useEffect(() => {
+        if(jwtTokenState.jwtToken !== null) {
+            navigate("/room/manage");
+        }
+    }, [jwtTokenState.jwtToken, navigate])
 
     const [profileImageSrc, setProfileImageSrc] = useState("");
     const onUploadProfileImage = (imageName, imageDataUrl) => {
