@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file
+  labels:
+    app: file
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: file
+  template:
+    metadata:
+      labels:
+        app: file
+    spec:
+      containers:
+        - name: file
+          image: sinsung6722/groupchat_file:v1
+          ports:
+            - containerPort: 8080
+          
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernates
+
+          livenessProbe:
+            httpGet:
+              path: '/sanityCheck'
+              port: 8080
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            successThreshold: 1
+            periodSeconds: 10
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: '/sanityCheck'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
