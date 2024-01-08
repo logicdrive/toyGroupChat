@@ -10,6 +10,7 @@ import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavButton from '../../_global/button/IconButton';
 import RoomProxy from '../../_global/proxy/RoomProxy';
+import CollectedDataProxy from '../../_global/proxy/CollectedDataProxy';
 import SubscribeRoomCreaterSocket from '../../_global/socket/SubscribeRoomCreaterSocket';
 
 const RoomManagePage = () => {
@@ -24,6 +25,7 @@ const RoomManagePage = () => {
             navigate("/user/signIn");
         }
     }, [jwtTokenState.jwtToken, navigate])
+
 
 
     const [inputedRoomName, setInputedRoomName] = useState("")
@@ -48,10 +50,29 @@ const RoomManagePage = () => {
         return (userId, roomId) => {
             addAlertPopUp("그륩채팅 생성이 정상적으로 수행되었습니다.", "success");
             setIsBackdropOpened(false);
+            navigate(0);
         }
     })
 
     const [subscribeRoomCreaterStatus] = SubscribeRoomCreaterSocket(notifiedRoomCreaterStatusHandler);
+
+
+
+    const [joinedRooms, setJoinedRooms] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+
+                setJoinedRooms((await CollectedDataProxy.joinedRooms(jwtTokenState)));
+
+            } catch (error) {
+                addAlertPopUp("참여된 그룹 채팅 목록을 로드하는 도중 에러가 발생했습니다!", "error");
+                console.error("참여된 그룹 채팅 목록을 로드하는 도중 에러가 발생했습니다!", error);
+            }
+        })()
+    }, [jwtTokenState, addAlertPopUp]);
+
 
 
     return (
@@ -89,48 +110,32 @@ const RoomManagePage = () => {
                 </DialogActions>
             </Dialog>
 
-            <Stack spacing={1} sx={{marginTop: 3}}>
-                <Card variant="outlined" sx={{ padding: 1.5, height: 50 }}>
-                    <Stack spacing={1}>
-                        <Box>
-                            <BoldText sx={{float: "left"}}>
-                                TEST ROOM 1
-                            </BoldText>
-                            <BoldText sx={{float: "left", position: "relative", left: 5, color: "gray"}}>
-                                [32]
-                            </BoldText>
-                            <BoldText sx={{float: "right", color: "gray"}}>
-                                2013.03.09
-                            </BoldText>
-                        </Box>
-                        <Box>
-                            <BoldText sx={{color: "gray"}}>
-                                TEST MESSAGE
-                            </BoldText>
-                        </Box>
-                    </Stack>
-                </Card>
 
-                <Card variant="outlined" sx={{ padding: 1.5, height: 50 }}>
-                    <Stack spacing={1}>
-                        <Box>
-                            <BoldText sx={{float: "left"}}>
-                                TEST ROOM 1
-                            </BoldText>
-                            <BoldText sx={{float: "left", position: "relative", left: 5, color: "gray"}}>
-                                [32]
-                            </BoldText>
-                            <BoldText sx={{float: "right", color: "gray"}}>
-                                2013.03.09
-                            </BoldText>
-                        </Box>
-                        <Box>
-                            <BoldText sx={{color: "gray"}}>
-                                TEST MESSAGE
-                            </BoldText>
-                        </Box>
-                    </Stack>
-                </Card>
+            <Stack spacing={1} sx={{marginTop: 3}}>
+                {
+                    joinedRooms.map((joinedRoom, index) => {
+                        return  <Card key={index} variant="outlined" sx={{ padding: 1.5, height: 50 }}>
+                            <Stack spacing={1}>
+                                <Box>
+                                    <BoldText sx={{float: "left"}}>
+                                        {joinedRoom.name}
+                                    </BoldText>
+                                    <BoldText sx={{float: "left", position: "relative", left: 5, color: "gray"}}>
+                                        [32]
+                                    </BoldText>
+                                    <BoldText sx={{float: "right", color: "gray"}}>
+                                        2013.03.09
+                                    </BoldText>
+                                </Box>
+                                <Box>
+                                    <BoldText sx={{color: "gray"}}>
+                                        TEST MESSAGE
+                                    </BoldText>
+                                </Box>
+                            </Stack>
+                        </Card>
+                    })
+                }
             </Stack>
 
             <Backdrop
