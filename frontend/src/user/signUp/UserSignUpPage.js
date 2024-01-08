@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Card, Stack, TextField, Button } from '@mui/material';
+import FileUploadButton from "../../_global/button/FileUploadButton";
+import ImageIcon from '@mui/icons-material/Image';
+import { Card, Stack, TextField, Button, Box } from '@mui/material';
 
 const UserSignUpPage = () => {
+    const [uploadedImageSrc, setUploadedImageSrc] = useState("");
+    const onUploadImage = (imageName, imageDataUrl) => {
+      setUploadedImageSrc(imageDataUrl);
+    }
+
 
     return (
         <div>
@@ -31,6 +38,31 @@ const UserSignUpPage = () => {
                         name="email"
                         sx={{marginTop: 3, width: 400, marginX: "auto"}}
                     />
+
+
+                    <Box
+                        component="img"
+                        sx={{
+                            height: 150,
+                            width: 150,
+                            margin: "auto",
+                            backgroundColor: "lightgray",
+                            borderRadius: 3,
+                            marginTop: 3
+                        }}
+                        alt="업로드된 이미지가 표시됩니다."
+                        src={((uploadedImageSrc.length === 0) ? "/NoImage.jpg" : uploadedImageSrc)}
+                    />
+
+                    <FileUploadButton accept="image/*" onUploadFile={onUploadImage}>
+                        <Button
+                            variant="text"
+                            color="primary"
+                            startIcon={<ImageIcon />}
+                        >
+                            프로필 이미지 업로드
+                        </Button>
+                    </FileUploadButton>
 
 
                     <Button variant="contained" sx={{marginTop: 6, width: 400, marginX: "auto"}}>회원가입</Button>
