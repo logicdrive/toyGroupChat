@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
-import NavButton from '../../_global/button/NavButton';
-import NavNavigationButtion from '../../_global/button/NavNavigationButton';
+import NavButton from '../../_global/button/IconButton';
+import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Card, Stack, Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';

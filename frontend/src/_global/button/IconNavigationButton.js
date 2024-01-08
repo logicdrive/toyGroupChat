@@ -1,5 +1,5 @@
 import React from 'react';
-import NavButton from './NavButton';
+import NavButton from './IconButton';
 import { useNavigate } from 'react-router-dom';
 
 const NavNavigationButtion = ({children, url, sx, ...props}) => {

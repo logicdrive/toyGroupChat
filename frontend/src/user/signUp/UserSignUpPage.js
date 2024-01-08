@@ -1,7 +1,7 @@
 import React from 'react';
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
-import NavNavigationButtion from '../../_global/button/NavNavigationButton';
+import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Card, Stack, TextField, Button } from '@mui/material';
 

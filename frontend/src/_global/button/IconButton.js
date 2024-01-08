@@ -4,11 +4,11 @@ import React from 'react';
 import { Link, Button } from '@mui/material';
 import NavText from '../text/NavText';
 
-const NavButton = ({children, onClick, sx, ...props}) => {
+const NavButton = ({children, onClick, sx, textSx, ...props}) => {
     return (
         <Link sx={{backgroundColor: "currentcolor", width: 50, height: 50, ...sx}} {...props}>
             <Button onClick={onClick}>
-                <NavText sx={{position: "relative", right: 7}}>
+                <NavText sx={{position: "relative", right: 7, ...textSx}}>
                     {children}
                 </NavText>
             </Button>
