@@ -3,6 +3,7 @@ import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavButton from '../../_global/button/IconButton';
 import NavNavigationButtion from '../../_global/button/IconNavigationButton';
+import FileUploadButton from "../../_global/button/FileUploadButton";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LinkIcon from '@mui/icons-material/Link';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -11,6 +12,11 @@ import { Card, CardMedia, Stack, Box, TextField, Button, Dialog, DialogTitle, Di
 
 const RoomChatPage = () => {
     const [isSharedLinkDialogOpend, setIsSharedLinkDialogOpend] = useState(false);
+
+    const [uploadedImageSrc, setUploadedImageSrc] = useState("");
+    const onUploadImage = (imageName, imageDataUrl) => {
+      setUploadedImageSrc(imageDataUrl);
+    }
 
     return (
         <div>
@@ -83,9 +89,14 @@ const RoomChatPage = () => {
 
 
             <Card sx={{marginTop: 3, height: "auto"}}>
-                <NavButton sx={{float: "left", backgroundColor: "white"}} textSx={{color: "lightgray"}}>
-                    <AddPhotoAlternateIcon sx={{fontSize: 35, paddingTop: 0.3}}/>
-                </NavButton>
+                <FileUploadButton accept="image/*" onUploadFile={onUploadImage}>
+                    <NavButton sx={{float: "left", backgroundColor: "white" }} 
+                               textSx={((uploadedImageSrc.length === 0) ? {color: "lightgray"} : {color: "black"})}
+                               buttonSx={{width: 50, minWidth: 50}}
+                    >
+                        <AddPhotoAlternateIcon sx={{fontSize: 35, paddingTop: 0.3, paddingLeft: 2}}/>
+                    </NavButton>
+                </FileUploadButton>
 
                 <TextField
                     name="message"

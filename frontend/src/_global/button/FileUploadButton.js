@@ -23,7 +23,6 @@ const FileUploadButton = ({accept, onUploadFile, children, ...props}) => {
   
     return (
       <>
-      <form>
         <input 
           accept={accept}
           type="file"
@@ -32,13 +31,12 @@ const FileUploadButton = ({accept, onUploadFile, children, ...props}) => {
           style={{opacity: 0, width: 0, height: 0}}
         />
   
-        <Box
+        <span
           onClick={() => {fileUploadRef.current.click()}}
           {...props}
         >
           {children}
-        </Box>
-      </form>
+        </span>
       </>
     )
 }
