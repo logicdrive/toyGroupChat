@@ -1,28 +1,80 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Card, Stack, TextField, Button, Box } from '@mui/material';
+import { Card, Stack, TextField, Button, Box, Backdrop, CircularProgress } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ImageIcon from '@mui/icons-material/Image';
+import { AlertPopupContext } from '../../_global/alertPopUp/AlertPopUpContext'
 import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavNavigationButtion from '../../_global/button/IconNavigationButton';
-import UserProxy from '../../_global/proxy/UserProxy';
 import FileUploadButton from "../../_global/button/FileUploadButton";
+import UserProxy from '../../_global/proxy/UserProxy';
 import SanityCheckSocket from '../../_global/socket/SanityCheckSocket';
+import SubscribeSignUpSocket from '../../_global/socket/SubscribeSignUpSocket';
 
 const UserSignUpPage = () => {
+    const {addAlertPopUp} = useContext(AlertPopupContext);
     const navigate = useNavigate();
-    
-    const [uploadedImageSrc, setUploadedImageSrc] = useState("");
-    const onUploadImage = (imageName, imageDataUrl) => {
-      setUploadedImageSrc(imageDataUrl);
-    }
-
-    UserProxy.signUp("email", "password", "name", "url");
+    const [isBackdropOpened, setIsBackdropOpened] = useState(false)
     SanityCheckSocket();
 
+    const [profileImageSrc, setProfileImageSrc] = useState("");
+    const onUploadProfileImage = (imageName, imageDataUrl) => {
+        setProfileImageSrc(imageDataUrl);
+    }
+
+
+    const [signUpInfo, setSignUpInfo] = useState({
+        "email": "", "password": "", "name": ""
+    })
+
+    const handleSignUpInfoChange = (event) => {
+        const { name, value } = event.target;
+        setSignUpInfo((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    }
+
+
+    const onSubmitSignUp = async () => {
+        setIsBackdropOpened(true);
+
+        try {
+
+            const userData = await UserProxy.signUp(signUpInfo.email, signUpInfo.password, signUpInfo.name, profileImageSrc);
+            subscribeSignUpStatus(userData.id);
+
+        } catch(error) {
+            addAlertPopUp("회원가입 도중에 오류가 발생했습니다!", "error");
+            console.error("회원가입 도중에 오류가 발생했습니다!", error);
+            
+            setIsBackdropOpened(false);
+        }
+    }
+
+    const [notifiedSignUpStatusHandler] = useState(() => {
+        return (userStatus, userId) => {
+            if(userStatus === "SignUpCompleted")
+            {
+                setIsBackdropOpened(false);
+                addAlertPopUp("회원가입이 정상적으로 수행되었습니다.", "success");
+                navigate("/user/signIn");
+            }
+            
+            if(userStatus === "UserRemovedByFail")
+            {
+                addAlertPopUp("회원가입 도중에 오류가 발생했습니다!", "error");
+                setIsBackdropOpened(false);
+            }
+        }
+    })
+
+    const [subscribeSignUpStatus] = SubscribeSignUpSocket(notifiedSignUpStatusHandler);
+
+
     return (
-        <div>
+        <>
             <TopAppBar title="회원가입">
                 <NavNavigationButtion url="/user/signIn">
                     <ArrowBackIcon sx={{fontSize: 40}}/>
@@ -37,19 +89,31 @@ const UserSignUpPage = () => {
                     <TextField
                         label="이메일"
                         name="email"
+                        type="email"
                         sx={{marginTop: 10, width: 400, marginX: "auto"}}
+
+                        value={signUpInfo.email}
+                        onChange={handleSignUpInfoChange}
                     />
 
                     <TextField
                         label="비밀번호"
-                        name="email"
+                        name="password"
+                        type="password"
                         sx={{marginTop: 3, width: 400, marginX: "auto"}}
+
+                        value={signUpInfo.password}
+                        onChange={handleSignUpInfoChange}
                     />
 
                     <TextField
                         label="닉네임"
                         name="name"
+                        type="text"
                         sx={{marginTop: 3, width: 400, marginX: "auto"}}
+
+                        value={signUpInfo.name}
+                        onChange={handleSignUpInfoChange}
                     />
 
 
@@ -64,10 +128,10 @@ const UserSignUpPage = () => {
                             marginTop: 3
                         }}
                         alt="업로드된 이미지가 표시됩니다."
-                        src={((uploadedImageSrc.length === 0) ? "/NoImage.jpg" : uploadedImageSrc)}
+                        src={((profileImageSrc.length === 0) ? "/NoImage.jpg" : profileImageSrc)}
                     />
 
-                    <FileUploadButton accept="image/*" onUploadFile={onUploadImage}>
+                    <FileUploadButton accept="image/*" onUploadFile={onUploadProfileImage}>
                         <Button
                             variant="text"
                             color="primary"
@@ -78,11 +142,18 @@ const UserSignUpPage = () => {
                     </FileUploadButton>
 
 
-                    <Button variant="contained" sx={{marginTop: 5, width: 400, marginX: "auto"}}>회원가입</Button>
+                    <Button onClick={onSubmitSignUp} variant="contained" sx={{marginTop: 5, width: 400, marginX: "auto"}}>회원가입</Button>
                     <Button onClick={() => {navigate("/user/signIn")}} variant="text" sx={{marginTop: 3, marginBottom: 2, width: 400, marginX: "auto"}}>돌아가기</Button>
                 </Stack>
             </Card>
-        </div>
+
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={isBackdropOpened}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        </>
     )
 }
 
