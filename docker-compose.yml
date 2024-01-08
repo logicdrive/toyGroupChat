@@ -72,7 +72,7 @@ services:
 
 
   groupchat_collecteddata:
-    image: sinsung6722/groupchat_collecteddata:v1
+    image: sinsung6722/groupchat_collecteddata:v2
     depends_on:
       - kafka
     ports:
