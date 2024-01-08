@@ -3,8 +3,9 @@ import TopAppBar from '../../_global/TopAppBar';
 import BoldText from '../../_global/text/BoldText';
 import NavNavigationButtion from '../../_global/button/IconNavigationButton';
 import UserProxy from '../../_global/proxy/UserProxy';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FileUploadButton from "../../_global/button/FileUploadButton";
+import SanityCheckSocket from '../../_global/socket/SanityCheckSocket';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ImageIcon from '@mui/icons-material/Image';
 import { Card, Stack, TextField, Button, Box } from '@mui/material';
 
@@ -15,6 +16,7 @@ const UserSignUpPage = () => {
     }
 
     UserProxy.signUp("email", "password", "name", "url");
+    SanityCheckSocket();
 
     return (
         <div>
